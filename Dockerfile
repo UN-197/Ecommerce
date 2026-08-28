@@ -1,7 +1,12 @@
-FROM nginx:1.27-alpine
+FROM node:18-alpine
 
-COPY . /usr/share/nginx/html/
+WORKDIR /app
 
-RUN ln -sf /usr/share/nginx/html/heikm.html /usr/share/nginx/html/index.html
+COPY package*.json ./
+RUN npm ci --only=production
 
-EXPOSE 80
+COPY . .
+
+EXPOSE 3001
+
+CMD ["node", "server.js"]
